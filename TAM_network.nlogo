@@ -9,9 +9,10 @@ individual-own
   age                   ;; age of an invividual
   age-group
   salary-group          ;; income of an individual
-  ;;ed-level              ;; educational level of an individual
-  esor                  ;; ecological sense of responsibiliy of an individual
+  ;;ed-level            ;; educational level of an individual
+  ;;esor                ;; ecological sense of responsibiliy of an individual
   typ                   ;; type of individual
+  aoev                  ;; acceptance of electric vehicles
 
   ;; belonging to group
   adopt                 ;; adopted or not
@@ -20,21 +21,25 @@ individual-own
   utility-u             ;; utility, perceived usefulness
   belief-e              ;; belief, desire, perceived ease of use
   attitude-a            ;; attitude toward using
-  behavoir-bi           ;; behavioral intention to use
+  behavior-bi           ;; behavioral intention to use
 ]
 
 globals
 [
   ;; generel network setup
-  characteristic matches
   initial-e-car-count
   tsize
 
   ;; external factors
-  subsidies             ;; subsidies on e-cars
-  infrastructure        ;; availability of infrastructure
-  tax                   ;; fuel tax
-  price                 ;; price of conventional cars
+  ;; subsidies          ;; subsidies on e-cars
+  ;; infrastructure     ;; availability of infrastructure
+  ;; tax                ;; fuel tax
+  ;; price              ;; price of conventional cars
+
+  ;; tam-factors (calculated variables)
+
+  thold                 ;; "Actual system use" / threshold for adoption
+
 ]
 
 to setup-individuals
@@ -42,6 +47,7 @@ to setup-individuals
   set-default-shape individual "circle"
 
   set tsize 0.5
+  set initial-e-car-count 0.026
 
   create-individual number-of-nodes
   [
@@ -49,7 +55,7 @@ to setup-individuals
   ]
 
   ask individual [set color blue set size tsize]
-  ask n-of (count individual * 0.026) individual [set color green set shape "car" set size tsize * 2]
+
 
 ;; prozentuale Werte aus Tabelle von Wolf (2015) übernommen
   ask n-of (count individual * 0.15) individual [set typ "Comfort-oriented Individualists"]
@@ -66,25 +72,28 @@ to setup-individuals
   ask n-of (count individual * 0.06) individual with [age-group = 0] [set age-group 5 set age (90 - random 12)]
 
 ;; salary-groups: nach Wolf (2015) --- work in progress, funktioniert aktuell nur mit "up-to-n-of", nicht mit "n-of"
-  ask up-to-n-of (count individual * 0.76) individual with [typ = "Comfort-oriented Individualists"] [set salary-group "<2500€ p. m."]
-  ask up-to-n-of (count individual * 0.24) individual with [typ = "Comfort-oriented Individualists"] [set salary-group ">2500€ p. m."]
+  ask n-of (count individual with [typ = "Comfort-oriented Individualists"] * 0.76) individual [set salary-group "<2500€ p. m."]
+  ask n-of (count individual with [typ = "Comfort-oriented Individualists"] * 0.24) individual [set salary-group ">2500€ p. m."]
 
-  ask up-to-n-of (count individual * 0.77) individual with [typ = "Cost-oriented Pragmatics"] [set salary-group "<2500€ p. m."]
-  ask up-to-n-of (count individual * 0.23) individual with [typ = "Cost-oriented Pragmatics"] [set salary-group ">2500€ p. m."]
+  ask n-of (count individual with [typ = "Cost-oriented Pragmatics"] * 0.77) individual [set salary-group "<2500€ p. m."]
+  ask n-of (count individual with [typ = "Cost-oriented Pragmatics"] * 0.23) individual [set salary-group ">2500€ p. m."]
 
-  ask up-to-n-of (count individual * 0.74) individual with [typ = "Innovation-oriented Progressives"] [set salary-group "<2500€ p. m."]
-  ask up-to-n-of (count individual * 0.26) individual with [typ = "Innovation-oriented Progressives"] [set salary-group ">2500€ p. m."]
+  ask n-of (count individual with [typ = "Innovation-oriented Progressives"] * 0.74) individual [set salary-group "<2500€ p. m."]
+  ask n-of (count individual with [typ = "Innovation-oriented Progressives"] * 0.26) individual [set salary-group ">2500€ p. m."]
 
-  ask up-to-n-of (count individual * 0.72) individual with [typ = "Eco-oriented Opinion Leaders"] [set salary-group "<2500€ p. m."]
-  ask up-to-n-of (count individual * 0.28) individual with [typ = "Eco-oriented Opinion Leaders"] [set salary-group ">2500€ p. m."]
+  ask n-of (count individual with [typ = "Eco-oriented Opinion Leaders"] * 0.72) individual [set salary-group "<2500€ p. m."]
+  ask n-of (count individual with [typ = "Eco-oriented Opinion Leaders"] * 0.28) individual [set salary-group ">2500€ p. m."]
 
 
+;; acceptance of electric vehicle - Attitude Toward Using (A)
+  ask individual with [typ = "Comfort-oriented Individualists"] [set aoev 3]
+  ask individual with [typ = "Cost-oriented Pragmatics"] [set aoev 3]
+  ask individual with [typ = "Innovation-oriented Progressives"] [set aoev 9]
+  ask individual with [typ = "Eco-oriented Opinion Leaders"] [set aoev 13]
 
-;  ask n-of (count individual * 0.25) individual [set age-group 1 set age (30 - random 12)]
-;  ask n-of (count individual * 0.25) individual with [age-group = 0] [set age-group 2 set age (42 - random 12)]
-;  ask n-of (count individual * 0.15) individual with [age-group = 0] [set age-group 3 set age (54 - random 12)]
-;  ask n-of (count individual * 0.15) individual with [age-group = 0] [set age-group 4 set age (66 - random 12)]
-;  ask n-of (count individual * 0.20) individual with [age-group = 0] [set age-group 5 set age (78 - random 12)]
+;; initial car assignment
+  ask n-of (count individual * initial-e-car-count) individual with [typ = "Innovation-oriented Progressives" or typ =  "Eco-oriented Opinion Leaders"] [set color green set shape "car" set size tsize * 2]
+
 
 
 end
@@ -156,7 +165,7 @@ number-of-nodes
 number-of-nodes
 10
 1000
-665.0
+271.0
 1
 1
 NIL
@@ -188,8 +197,68 @@ average-node-degree
 average-node-degree
 3
 15
-12.0
+7.0
 1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+133
+393
+305
+426
+subsidies
+subsidies
+-1
+1
+0.0
+0.1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+135
+289
+307
+322
+infrastructure
+infrastructure
+-1
+1
+0.0
+0.1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+134
+341
+306
+374
+tax
+tax
+-1
+1
+0.0
+0.1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+141
+441
+313
+474
+Price
+Price
+-1
+1
+0.0
+0.1
 1
 NIL
 HORIZONTAL
@@ -549,7 +618,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.2.2
+NetLogo 6.2.0
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
