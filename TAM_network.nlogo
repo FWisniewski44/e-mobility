@@ -266,23 +266,36 @@ HORIZONTAL
 @#$#@#$#@
 # Agentenbasierte Modellierung: Verbreitung einer Innovation in einem Netzwerk mit äußeren Einflüssen unter Nutzung des TAM
 
-## Anmerkungen / Aktuelles (kann/soll hier während Arbeitsprozess gelistet werden!)
+## FRAGESTELLUNG
+> **Welchen Einfluss haben verschiedene Policies des Staates auf die Adaptionsentscheidung eines Individuums (Kauf eines E-Autos) in einem sozialen Netzwerk auf Basis des TAM (Technology Acceptance Model)?**
+
+## Anmerkungen / Aktuelles (während Arbeitsprozess aktualisieren)
 + Innovation = E-Fahrzeuge
-	+ Welche Knoten kaufen eines, welche nicht? Mechanismus? Berechnung? Produkt vs. Summe?
-+ Knoten erhalten Eigenschaften, welche ihre Grund-Attitude toward Using bestimmen
+	+ Festlegung d. Schwellenwertes: wie hoch? Auf Grundlage von Forschung bestimmbar?
+	+ Zusammenstellung d. Formel für die Errechnung, welchen Wert ein Turtle erreicht
+	+ Variationsparameter für die externen Variablen über Zeit?
+	+ Größe des Netzwerkeffektes: wie bestimmbar?
++ Grundwert für Attitude Toward Using: von uns festgelegt auf Wolf et al. (2015) und deren 
 + Usefulness (U) und Ease of Use (E) müssen von den Individuen eingeschätzt werden können
 	+ Hier evtl. Summen-Aggregation besser, z. B.: Grundwert Usefulness E-Auto auf 1 setzen, dann +5 für hohe Subventionen, +2 für etwas Subvention, +0 für keine Subvention (stark vereinfacht)
 
-## Ideen
-+ Freundschafts- und Familienbeziehungen als Grundlage für das Netzwerk:
-	+ Familie: wir haben Infos aus dem ESS, dass der Average hier bei 2,6 liegt, also können wir von aufgerundet 3 ausgehen (einziges Problem: Average verzerrt evtl. weil wir viele Singles mit einzelnen Haushalten in D. haben --- das nur, dass wir es wissen)
-	+ Freundeskreis: ich habe [das hier](https://www.spektrum.de/frage/wie-viele-freunde-kann-ein-mensch-haben/1883803) gefunden. Hier steht was von eine Bekannten-Netzwerk von ca. 150 pro Person, aber Freunde sind pro Person bei ca. 10-15 --- zu **engen Vertrauten** (die für uns eigentlich relevanter wären) zählen die meisten Menschen 3-5
-+ Nutzung der "Acceptance of Electric Vehicles" aus Wolf et al. (2015) als Ausgangswert (also Attitude Toward Usings) für die Kalkulation, ob ein Turtle adaptiert oder nicht
-	+ Beeinflussung daher möglich über Slider der externen Einflüsse, welche *Usefulness* und *Ease of Use* erhöhen/vermindern
-	+ Beeinflussung ebenfalls über Knoten im jeweiligen Netzwerk als Netzwerkeffekt --- Knoten mit E-Auto beeinflussen andere (evtl. mit Gewichtung: Opinion-Leaders könnten andere eher beeinflussen (als Opinion-Leader = deren Ziel), als Individualisten (kein Interesse daran, was andere für ein Auto fahren sollten)
+## Ideen (während Arbeitsprozess aktualisieren)
+### Freundschafts- und Familienbeziehungen als Grundlage für das Netzwerk
 
-## Fragestellung
-> Welchen Einfluss haben verschiedene Policies des Staates auf die Adaptionsentscheidung eines Individuums (Kauf eines E-Autos) in einem sozialen Netzwerk auf Basis des TAM (Technology Acceptance Model)?
+**Familie:**
+
++ wir haben Infos aus dem ESS, dass der Average hier bei 2,6 liegt, also können wir von aufgerundet 3 ausgehen (einziges Problem: Average verzerrt evtl. weil wir viele Singles mit einzelnen Haushalten in D. haben --- das nur, dass wir es wissen)
+
+**Freundeskreis:**
+
++ Ich habe [das hier](https://www.spektrum.de/frage/wie-viele-freunde-kann-ein-mensch-haben/1883803) und [das hier](https://www.quarks.de/gesellschaft/darum-haben-nicht-alle-menschen-in-deinem-leben-platz/) gefunden. Hier steht was von eine Bekannten-Netzwerk von ca. 150 pro Person, aber Freunde sind pro Person bei ca. 10-15 --- zu **engen Vertrauten** (die für uns eigentlich relevanter wären) zählen die meisten Menschen 3-5
++ Die Zahlen werden [bei Gillespie et al. (2015)](https://journals.sagepub.com/doi/full/10.1177/0265407514546977) z. B. wissenschaftlich nochmal bestätigt
++ Dabei gehen eigentlich alle diese Netzwerk-Größen-Überlegungen auf die [Dunbar-Zahl von 150](https://de.wikipedia.org/wiki/Dunbar-Zahl) zurück. Diese kommt aus der Anthropologie/Evolutionsforschung und behandelt die Netzwerkgröße von Primaten, siehe [hier](https://www.sciencedirect.com/science/article/pii/004724849290081J)
+
+### Nutzung der "Acceptance of Electric Vehicles" aus Wolf et al. (2015) als Ausgangswert (also Attitude Toward Usings) für die Kalkulation, ob ein Turtle adaptiert oder nicht
+
++ Beeinflussung daher möglich über Slider der externen Einflüsse, welche *Usefulness* und *Ease of Use* erhöhen/vermindern
++ Beeinflussung ebenfalls über Knoten im jeweiligen Netzwerk als Netzwerkeffekt --- Knoten mit E-Auto beeinflussen andere (evtl. mit Gewichtung: Opinion-Leaders könnten andere eher beeinflussen (als Opinion-Leader = deren Ziel), als Individualisten (kein Interesse daran, was andere für ein Auto fahren sollten)
 
 ## Das TAM nach Davis et al. (1989)
 Das TAM stellt einen Ansatz für das Nutzungsverhalten eines Individuums gegenüber einer Innovation dar. Dabei werden die jeweiligen Einflüsse des wahrgenommenen Nutzens (Utility) und des tatsächlichen Nutzens (Belief, Desire) auf die damit verbunden Absicht der Nutzung betrachtet. Eine gesteigerte Absicht der Nutzung resultiert schlussendlich zu einer Nutzung jener Technologie (E-Auto). 
