@@ -227,7 +227,7 @@ infrastructure
 infrastructure
 -1
 1
-0.0
+0.5
 0.1
 1
 NIL
@@ -272,6 +272,14 @@ HORIZONTAL
 + Knoten erhalten Eigenschaften, welche ihre Grund-Attitude toward Using bestimmen
 + Usefulness (U) und Ease of Use (E) müssen von den Individuen eingeschätzt werden können
 	+ Hier evtl. Summen-Aggregation besser, z. B.: Grundwert Usefulness E-Auto auf 1 setzen, dann +5 für hohe Subventionen, +2 für etwas Subvention, +0 für keine Subvention (stark vereinfacht)
+
+## Ideen
++ Freundschafts- und Familienbeziehungen als Grundlage für das Netzwerk:
+	+ Familie: wir haben Infos aus dem ESS, dass der Average hier bei 2,6 liegt, also können wir von aufgerundet 3 ausgehen (einziges Problem: Average verzerrt evtl. weil wir viele Singles mit einzelnen Haushalten in D. haben --- das nur, dass wir es wissen)
+	+ Freundeskreis: ich habe [das hier](https://www.spektrum.de/frage/wie-viele-freunde-kann-ein-mensch-haben/1883803) gefunden. Hier steht was von eine Bekannten-Netzwerk von ca. 150 pro Person, aber Freunde sind pro Person bei ca. 10-15 --- zu **engen Vertrauten** (die für uns eigentlich relevanter wären) zählen die meisten Menschen 3-5
++ Nutzung der "Acceptance of Electric Vehicles" aus Wolf et al. (2015) als Ausgangswert (also Attitude Toward Usings) für die Kalkulation, ob ein Turtle adaptiert oder nicht
+	+ Beeinflussung daher möglich über Slider der externen Einflüsse, welche *Usefulness* und *Ease of Use* erhöhen/vermindern
+	+ Beeinflussung ebenfalls über Knoten im jeweiligen Netzwerk als Netzwerkeffekt --- Knoten mit E-Auto beeinflussen andere (evtl. mit Gewichtung: Opinion-Leaders könnten andere eher beeinflussen (als Opinion-Leader = deren Ziel), als Individualisten (kein Interesse daran, was andere für ein Auto fahren sollten)
 
 ## Fragestellung
 > Welchen Einfluss haben verschiedene Policies des Staates auf die Adaptionsentscheidung eines Individuums (Kauf eines E-Autos) in einem sozialen Netzwerk auf Basis des TAM (Technology Acceptance Model)?
@@ -333,8 +341,10 @@ Die komplexeren Modelle (TAM2, UTAUT) sind weniger praxiserprobt und komplexer, 
 3. Externe Variablen variieren mit verstreichender Zeit (Förderungen werden stärker / schwächer oder laufen aus, etc., …)
 4. Auswirkungen der Netzwerkstruktur: wenn bereits viele E-Fahrzeug-Nutzer erzeugt wurden, stellt auch das einen Faktor dar, der den Schwellenwert treiben kann (der natürlich nicht allzu hoch sein darf, weil wir sonst den sozialen Druck z. B. mehr für Umwelt zu tun massiv überschätzen würden)
 
-## Wolf (2015): Klassifizierung von Individuen und Zusammenhang mit Präferenz für ein E-Fahrzeug
-Frage danach, was die einzelnen Gruppen von Individuen bedeuten: sollte hier gelistet werden!
+## Wolf, I., Schröder, T., Neumann, J., de Haan, G. (2015). Changing minds about electric cars: An empirically grounded agent-based modeling approach
++ Aufsatz [unter diesem Link](https://www.sciencedirect.com/science/article/abs/pii/S0040162514002960) verfügbar
++ Klassifizierung von Individuen und Zusammenhang mit Präferenz für ein E-Fahrzeug
++ Frage danach, was die einzelnen Gruppen von Individuen bedeuten: sollte hier gelistet werden!
 @#$#@#$#@
 default
 true
@@ -618,7 +628,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.2.0
+NetLogo 6.2.2
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
