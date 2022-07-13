@@ -1,3 +1,10 @@
+;; ============================================================================================================================================================
+;; ============================================================================================================================================================
+;; TEIL I: variablenteil
+;; ============================================================================================================================================================
+;; ============================================================================================================================================================
+
+
 breed
 [
   individual individuals
@@ -23,6 +30,9 @@ individual-own
   belief-e              ;; belief, desire, perceived ease of use
   attitude-a            ;; attitude toward using
   behavior-bi           ;; behavioral intention to use
+
+  ;; time factor
+  adoption-check-timer
 ]
 
 globals
@@ -33,16 +43,34 @@ globals
   ;;adopt
 
   ;; external factors
-  ;; subsidies          ;; subsidies on e-cars
-  ;; infrastructure     ;; availability of infrastructure
-  ;; tax                ;; fuel tax
-  ;; price              ;; price of conventional cars
+  subsidies          ;; subsidies on e-cars
+  infrastructure     ;; availability of infrastructure
+  tax                ;; fuel tax
+  price_ev           ;; price of conventional cars
 
   ;; tam-factors (calculated variables)
 
   thold                 ;; "Actual system use" / threshold for adoption
 
 ]
+
+;; ============================================================================================================================================================
+;; ============================================================================================================================================================
+;; ende variablenteil
+;; ============================================================================================================================================================
+;; ============================================================================================================================================================
+
+
+;; ============================================================================================================================================================
+;; ============================================================================================================================================================
+;; TEIL II: methoden und mechanismen
+;; ============================================================================================================================================================
+;; ============================================================================================================================================================
+
+;; ============================================================================================================================================================
+;; setup der individuen im netzwerk
+;; ============================================================================================================================================================
+
 
 to setup-individuals
 
@@ -98,10 +126,27 @@ to setup-individuals
 ;; initial car assignment
   ;;ask n-of (count individual * initial-e-car-count) individual with [typ = "Innovation-oriented Progressives" or typ =  "Eco-oriented Opinion Leaders"] [set adopt? true set color green set shape "car" set size tsize * 2]
 
-;; anfrage für individuals dass der anteil von 2,6% die procedure von "adopted haben soll
+;; anfrage für individuals dass der anteil von 2,6% die procedure von "adopted" (siehe unten) haben soll
   ask n-of (count individual * initial-e-car-count) turtles [adopted]
 
+;; die funktionieren alle nicht, ich weiß aber nicht warum
+  ask individual [ count_neighbor ]
+  ;;ask individual [set adopted_neighbors (count (link-neighbors with [adopt? = true]))]
+  ;;ask one-of turtles [set adopted_neighbors sum [count turtles]]
+  ;;ask individual with [adopt? = false] [count_neighbor]
+  ;;ask individual [set adopted_neighbors count individual with [any? link-neighbors with [shape = "car"]]]
+
 end
+
+;; ============================================================================================================================================================
+;; ende setup individuen
+;; ============================================================================================================================================================
+
+
+
+;; ============================================================================================================================================================
+;; beschreibung adoption der individuen
+;; ============================================================================================================================================================
 
 to adopted  ;; turtle procedure für alle, die adaptieren
   set adopt? true
@@ -117,26 +162,93 @@ to not-adopted  ;; turtle procedure für alle, die nicht adaptieren
   set size tsize * 0.9
 end
 
-;to spread-ev
-;  ask turtles with [adopt?]
-;    ;;[ ask link-neighbors with [not resistant?]
-;        [ if random-float 100 < thold
-;            [ adopted ] ]
+to count_neighbor
+  show count (link-neighbors with [shape = "car"])
+  ;;if count link-neighbors with [adopt? = true] > 0 [set adopted_neighbors [count turtles [link-neighbors with [shape = "car"]]]]
+  ;;show adopted_neighbors
+  ;;set adopted_neighbors (count (link-neighbors with [shape = "car"]))
+end
+
+;; ============================================================================================================================================================
+;; ende beschreibung adoption der individuen
+;; ============================================================================================================================================================
+
+
+
+;; ============================================================================================================================================================
+;; methoden zur verrechnung der globals für externe variablen mit den eingestellten faktoren in den slidern
+;; ============================================================================================================================================================
+
+to multiply-infrastructure
+  set infrastructure (infrastructure * infrastructure-factor)
+end
+
+to multiply-tax
+  set tax (tax * tax-factor)
+end
+
+to multiply-subsidies
+  set subsidies (subsidies * subsidies-factor)
+end
+
+to multiply-price_ev
+  set price_ev (price_ev * price_ev-factor)
+end
+
+to infl-infrastructure
+  set belief-e infrastructure + (adopted_neighbors / 10)
+end
+
+;; ============================================================================================================================================================
+;; ende verrechnungsmethoden
+;; ============================================================================================================================================================
+
+
+
+;; ============================================================================================================================================================
+;; ausbreitungsmechanismen und GO
+;; ============================================================================================================================================================
+
+to spread-ev ;; könnte schon funktionieren: methode, die von link-neighbors aus auf die bisher "not-adapted turtles" einwirken soll
+  ask turtles with [adopt?]
+    [ ask link-neighbors with [not adopt?]
+        [ if random-float 100 < thold
+            [ adopted ] ]
+    ]
+end
+
+;; aktuell eher noch pseudocode
+;to adoption-check
+;  ask turtles with [adopt? and adoption-check-timer = 0]
+;  [
+;    if (utility-u + belief-e + attitude-a) of turtles > 30 [adopted] ;; 30 hier erstmal als zufälliger Wert ausgewählt; die summenfunktion stimmt noch nicht ganz
+;  ]
 ;end
 
+;; help
 ;to go
-;  if all? turtles [not adopt?]
+;  if all? turtles [adopt? = false]
 ;    [ stop ]
 ;  ask turtles
 ;  [
-;     set virus-check-timer virus-check-timer + 1
-;     if virus-check-timer >= virus-check-frequency
-;       [ set virus-check-timer 0 ]
+;     set adoption-check-timer adoption-check-timer + 1
+;     if adoption-check-timer >= adoption-check-frequency
+;       [ set adoption-check-timer 0 ]
 ;  ]
-;  spread-virus
-;  do-virus-checks
+;  spread-ev
+;  adoption-check
 ;  tick
 ;end
+
+;; ============================================================================================================================================================
+;; ende ausbreitungsmechanismen und GO
+;; ============================================================================================================================================================
+
+
+
+;; ============================================================================================================================================================
+;; setup netzwerk
+;; ============================================================================================================================================================
 
 to setup-spatially-clustered-network
   let num-links (average-node-degree * number-of-nodes) / 2
@@ -156,8 +268,6 @@ to setup-spatially-clustered-network
   ]
 end
 
-
-
 to setup
 
   clear-all
@@ -166,6 +276,10 @@ to setup
   reset-ticks
 
 end
+
+;; ============================================================================================================================================================
+;; ende setup netzwerk
+;; ============================================================================================================================================================
 @#$#@#$#@
 GRAPHICS-WINDOW
 429
@@ -203,7 +317,7 @@ number-of-nodes
 number-of-nodes
 10
 1000
-271.0
+82.0
 1
 1
 NIL
@@ -235,7 +349,7 @@ average-node-degree
 average-node-degree
 3
 15
-7.0
+8.0
 1
 1
 NIL
@@ -244,31 +358,31 @@ HORIZONTAL
 SLIDER
 133
 393
-305
+331
 426
-subsidies
-subsidies
+subsidies-factor
+subsidies-factor
 -1
 1
 0.0
 0.1
 1
-NIL
+factor
 HORIZONTAL
 
 SLIDER
 135
 289
-307
+361
 322
-infrastructure
-infrastructure
+infrastructure-factor
+infrastructure-factor
 -1
 1
-0.5
+0.4
 0.1
 1
-NIL
+factor
 HORIZONTAL
 
 SLIDER
@@ -276,29 +390,29 @@ SLIDER
 341
 306
 374
-tax
-tax
+tax-factor
+tax-factor
 -1
 1
-0.0
+0.8
 0.1
 1
-NIL
+factor
 HORIZONTAL
 
 SLIDER
 141
 441
-313
+333
 474
-Price
-Price
+price_ev-factor
+price_ev-factor
 -1
 1
-0.0
+0.1
 0.1
 1
-NIL
+factor
 HORIZONTAL
 
 @#$#@#$#@
