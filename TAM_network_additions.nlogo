@@ -282,10 +282,10 @@ end
 ;; ============================================================================================================================================================
 @#$#@#$#@
 GRAPHICS-WINDOW
-429
+277
 10
-1192
-774
+855
+589
 -1
 -1
 18.415
@@ -298,10 +298,10 @@ GRAPHICS-WINDOW
 0
 0
 1
--20
-20
--20
-20
+-15
+15
+-15
+15
 1
 1
 1
@@ -309,26 +309,26 @@ ticks
 30.0
 
 SLIDER
-33
-40
-200
-73
+12
+10
+238
+43
 number-of-nodes
 number-of-nodes
 10
 1000
-82.0
+200.0
 1
 1
 NIL
 HORIZONTAL
 
 BUTTON
-47
-187
-113
-220
-Setup
+95
+94
+165
+127
+SETUP
 setup
 NIL
 1
@@ -341,25 +341,25 @@ NIL
 1
 
 SLIDER
-31
-98
-203
-131
+12
+51
+238
+84
 average-node-degree
 average-node-degree
 3
 15
-8.0
+9.0
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-133
-393
-331
-426
+14
+301
+240
+334
 subsidies-factor
 subsidies-factor
 -1
@@ -371,10 +371,10 @@ factor
 HORIZONTAL
 
 SLIDER
-135
-289
-361
-322
+14
+258
+240
+291
 infrastructure-factor
 infrastructure-factor
 -1
@@ -386,10 +386,10 @@ factor
 HORIZONTAL
 
 SLIDER
-134
-341
-306
-374
+14
+215
+239
+248
 tax-factor
 tax-factor
 -1
@@ -401,10 +401,10 @@ factor
 HORIZONTAL
 
 SLIDER
-141
-441
-333
-474
+14
+345
+240
+378
 price_ev-factor
 price_ev-factor
 -1
@@ -414,6 +414,23 @@ price_ev-factor
 1
 factor
 HORIZONTAL
+
+BUTTON
+168
+94
+238
+127
+GO
+NIL
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 # Agentenbasierte Modellierung: Verbreitung einer Innovation in einem Netzwerk mit äußeren Einflüssen unter Nutzung des TAM
