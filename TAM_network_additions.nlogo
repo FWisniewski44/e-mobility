@@ -130,7 +130,9 @@ to setup-individuals
   ask n-of (count individual * initial-e-car-count) turtles [adopted]
 
 ;; die funktionieren alle nicht, ich weiß aber nicht warum
-  ask individual [ count_neighbor ]
+  ask turtles [ count_neighbor ]
+  ask individual with [adopt? = true] [ask link-neighbors [setvalue]]
+  ;;ask turtles with [adopt? = true] [ask link-neighbors with [color = "blue"] [set adopted_neighbors adopted_neighbors + count(turtles with [adopt? = true])]]
   ;;ask individual [set adopted_neighbors (count (link-neighbors with [adopt? = true]))]
   ;;ask one-of turtles [set adopted_neighbors sum [count turtles]]
   ;;ask individual with [adopt? = false] [count_neighbor]
@@ -162,8 +164,13 @@ to not-adopted  ;; turtle procedure für alle, die nicht adaptieren
   set size tsize * 0.9
 end
 
+to setvalue
+  set adopted_neighbors count(individual with [adopt? = true])
+end
+
 to count_neighbor
-  show count (link-neighbors with [shape = "car"])
+;  if any? turtles with [link-neighbors ]] > 0 set adopted_neighbors (count (link-neighbors with [adopt? = true]))
+;  show adopted_neighbors
   ;;if count link-neighbors with [adopt? = true] > 0 [set adopted_neighbors [count turtles [link-neighbors with [shape = "car"]]]]
   ;;show adopted_neighbors
   ;;set adopted_neighbors (count (link-neighbors with [shape = "car"]))
@@ -196,7 +203,7 @@ to multiply-price_ev
 end
 
 to infl-infrastructure
-  set belief-e infrastructure + (adopted_neighbors / 10)
+  set belief-e infrastructure + (adopted_neighbors / 10) ;; 10 als arbiträrer Wert
 end
 
 ;; ============================================================================================================================================================
@@ -317,7 +324,7 @@ number-of-nodes
 number-of-nodes
 10
 1000
-200.0
+99.0
 1
 1
 NIL
