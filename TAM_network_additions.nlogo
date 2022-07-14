@@ -439,6 +439,11 @@ NIL
 > **Welchen Einfluss haben verschiedene Policies des Staates auf die Adaptionsentscheidung eines Individuums (Kauf eines E-Autos) in einem sozialen Netzwerk auf Basis des TAM (Technology Acceptance Model)?**
 
 ## Anmerkungen / Aktuelles (während Arbeitsprozess aktualisieren)
+**Berechnungen im TAM**
+
+<img src="TAM_Berechnungen.jpeg" alt="TAM mit unseren Berechnungen" width="1000"/>
+
+
 + Innovation = E-Fahrzeuge
 	+ Festlegung d. Schwellenwertes: wie hoch? Auf Grundlage von Forschung bestimmbar?
 	+ Zusammenstellung d. Formel für die Errechnung, welchen Wert ein Turtle erreicht
@@ -447,6 +452,12 @@ NIL
 + Grundwert für Attitude Toward Using: von uns festgelegt auf Wolf et al. (2015) und deren 
 + Usefulness (U) und Ease of Use (E) müssen von den Individuen eingeschätzt werden können
 	+ Hier evtl. Summen-Aggregation besser, z. B.: Grundwert Usefulness E-Auto auf 1 setzen, dann +5 für hohe Subventionen, +2 für etwas Subvention, +0 für keine Subvention (stark vereinfacht)
+
+**Gewichtung von gleichem Typ bei Nachbarschafts-Faktor**
+
++ Auszählung der Nachbarn: wie viele haben schon adopted?
+	+ möglich nach: Farbe, Shape, Status von "adopt?"-Variable
+	+ Aktuell: Schwierigkeiten mit *link-neighbors*-Funktion und *count*
 
 ## Ideen (während Arbeitsprozess aktualisieren)
 ### Freundschafts- und Familienbeziehungen als Grundlage für das Netzwerk
@@ -457,11 +468,9 @@ NIL
 
 **Freundeskreis:**
 
-+ Ich habe [das hier](https://www.spektrum.de/frage/wie-viele-freunde-kann-ein-mensch-haben/1883803) und [das hier](https://www.quarks.de/gesellschaft/darum-haben-nicht-alle-menschen-in-deinem-leben-platz/) gefunden. Hier steht was von eine Bekannten-Netzwerk von ca. 150 pro Person, aber Freunde sind pro Person bei ca. 10-15 --- zu **engen Vertrauten** (die für uns eigentlich relevanter wären) zählen die meisten Menschen 3-5
++ Ich habe [das hier](https://www.spektrum.de/frage/wie-viele-freunde-kann-ein-mensch-haben/1883803) und [das hier](https://www.quarks.de/gesellschaft/darum-haben-nicht-alle-menschen-in-deinem-leben-platz/) gefunden. Hier steht etwas von eine Bekannten-Netzwerk von ca. 150 pro Person, aber Freunde sind pro Person bei ca. 10-15 --- zu **engen Vertrauten** (die für uns eigentlich relevanter wären) zählen die meisten Menschen 3-5 bzw. lt. Gillespie 4-6.
 + Die Zahlen werden [bei Gillespie et al. (2015)](https://journals.sagepub.com/doi/full/10.1177/0265407514546977) z. B. wissenschaftlich nochmal bestätigt
 + Dabei gehen eigentlich alle diese Netzwerk-Größen-Überlegungen auf die [Dunbar-Zahl von 150](https://de.wikipedia.org/wiki/Dunbar-Zahl) zurück. Diese kommt aus der Anthropologie/Evolutionsforschung und behandelt die Netzwerkgröße von Primaten, siehe [hier](https://www.sciencedirect.com/science/article/pii/004724849290081J)
-
-**Gewichtung von gleichem Typ bei Nachbarschafts-Faktor**
 
 ### Nutzung der "Acceptance of Electric Vehicles" aus Wolf et al. (2015) als Ausgangswert (also Attitude Toward Usings) für die Kalkulation, ob ein Turtle adaptiert oder nicht
 
