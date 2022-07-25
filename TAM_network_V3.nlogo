@@ -31,6 +31,7 @@ globals
   initial-e-car-count
   tsize
   average-node-degree
+  tick-count
 ]
 
 ;; ============================================================================================================================================================
@@ -150,6 +151,7 @@ end
 to setup
   clear-all
   set average-node-degree 9
+  set tick-count 50
   setup-individuals
   setup-spatially-clustered-network
   ask individual with [adopt? = false] [count_neighbors]
@@ -218,13 +220,13 @@ end
 
 @#$#@#$#@
 GRAPHICS-WINDOW
-277
-11
-855
-590
+478
+10
+1280
+813
 -1
 -1
-18.415
+25.613
 1
 10
 1
@@ -253,17 +255,17 @@ number-of-nodes
 number-of-nodes
 10
 1000
-500.0
+1000.0
 1
 1
 NIL
 HORIZONTAL
 
 BUTTON
-95
-94
-165
+244
 127
+314
+160
 SETUP
 setup
 NIL
@@ -277,40 +279,40 @@ NIL
 1
 
 SLIDER
-14
-301
-240
-334
+244
+46
+470
+79
 subsidies
 subsidies
 0
 1
-0.7
+1.0
 0.1
 1
 factor
 HORIZONTAL
 
 SLIDER
-14
-258
-240
-291
+244
+10
+470
+43
 infrastructure
 infrastructure
 0
 1
-0.7
+1.0
 0.1
 1
 factor
 HORIZONTAL
 
 BUTTON
-168
-94
-238
-127
+400
+129
+470
+162
 GO
 go
 T
@@ -324,34 +326,37 @@ NIL
 1
 
 SLIDER
-15
-393
-187
-426
-tick-count
-tick-count
-5
-100
-50.0
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-16
-442
-188
-475
+244
+82
+470
+115
 thold
 thold
 0
 1
-0.4
+0.45
 0.01
 1
 NIL
 HORIZONTAL
+
+PLOT
+0
+433
+475
+813
+Adopted individuals in %
+NIL
+NIL
+0.0
+50.0
+0.0
+1.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -11085214 true "" "plot count turtles with [adopt? = true] / count turtles"
 
 @#$#@#$#@
 # Agentenbasierte Modellierung: Verbreitung einer Innovation in einem Netzwerk mit äußeren Einflüssen unter Nutzung des TAM
@@ -746,6 +751,32 @@ NetLogo 6.2.0
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
+<experiments>
+  <experiment name="experiment" repetitions="1" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>count turtles</metric>
+    <enumeratedValueSet variable="number-of-nodes">
+      <value value="1000"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="infrastructure">
+      <value value="0"/>
+      <value value="1"/>
+      <value value="0.1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="subsidies">
+      <value value="0"/>
+      <value value="1"/>
+      <value value="0.1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="thold">
+      <value value="0.05"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="tick-count">
+      <value value="50"/>
+    </enumeratedValueSet>
+  </experiment>
+</experiments>
 @#$#@#$#@
 @#$#@#$#@
 default
