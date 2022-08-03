@@ -1,9 +1,3 @@
-;; ============================================================================================================================================================
-;; ============================================================================================================================================================
-;; TEIL I: Variables
-;; ============================================================================================================================================================
-;; ============================================================================================================================================================
-
 breed
 [
   individual individuals
@@ -73,30 +67,30 @@ to setup-individuals
   ask n-of (count individual * 0.35) individual with [typ = 0] [set typ "Eco-oriented Opinion Leaders"]
 
 ;; salary-groups: nach Wolf (2015) --- work in progress, funktioniert aktuell nur mit "up-to-n-of", nicht mit "n-of"
-  ask n-of (count individual with [typ = "Comfort-oriented Individualists"] * 0.76) individual with [typ = "Comfort-oriented Individualists"] [set salary-group "<2500€ p. m."]
-  ask individual with [typ = "Comfort-oriented Individualists" and salary-group = 0] [set salary-group ">2500€ p. m."]
+  ask n-of (count individual with [typ = "Comfort-oriented Individualists"] * 0.76) individual with [typ = "Comfort-oriented Individualists"] [set salary-group "<2500‚ p. m."]
+  ask individual with [typ = "Comfort-oriented Individualists" and salary-group = 0] [set salary-group ">2500‚ p. m."]
 
-  ask n-of (count individual with [typ = "Cost-oriented Pragmatics"] * 0.77) individual with [typ = "Cost-oriented Pragmatics"] [set salary-group "<2500€ p. m."]
-  ask individual with [typ = "Cost-oriented Pragmatics" and salary-group = 0] [set salary-group ">2500€ p. m."]
+  ask n-of (count individual with [typ = "Cost-oriented Pragmatics"] * 0.77) individual with [typ = "Cost-oriented Pragmatics"] [set salary-group "<2500‚ p. m."]
+  ask individual with [typ = "Cost-oriented Pragmatics" and salary-group = 0] [set salary-group ">2500‚ p. m."]
 
-  ask n-of (count individual with [typ = "Innovation-oriented Progressives"] * 0.74) individual with [typ = "Innovation-oriented Progressives"] [set salary-group "<2500€ p. m."]
-  ask individual with [typ = "Innovation-oriented Progressives" and salary-group = 0] [set salary-group ">2500€ p. m."]
+  ask n-of (count individual with [typ = "Innovation-oriented Progressives"] * 0.74) individual with [typ = "Innovation-oriented Progressives"] [set salary-group "<2500‚ p. m."]
+  ask individual with [typ = "Innovation-oriented Progressives" and salary-group = 0] [set salary-group ">2500‚ p. m."]
 
-  ask n-of (count individual with [typ = "Eco-oriented Opinion Leaders"] * 0.72) individual with [typ = "Eco-oriented Opinion Leaders"] [set salary-group "<2500€ p. m."]
-  ask individual with [typ = "Eco-oriented Opinion Leaders" and salary-group = 0] [set salary-group ">2500€ p. m."]
+  ask n-of (count individual with [typ = "Eco-oriented Opinion Leaders"] * 0.72) individual with [typ = "Eco-oriented Opinion Leaders"] [set salary-group "<2500‚ p. m."]
+  ask individual with [typ = "Eco-oriented Opinion Leaders" and salary-group = 0] [set salary-group ">2500‚ p. m."]
 
 ;; assignment of salary amount in % to each individual
-  ask individual with [salary-group = "<2500€ p. m."] [set pupo (random 100) / 100]
-  ask individual with [salary-group = ">2500€ p. m."] [set pupo (100 - random 50) / 100]
+  ask individual with [salary-group = "<2500‚ p. m."] [set pupo (random 101) / 100]
+  ask individual with [salary-group = ">2500‚ p. m."] [set pupo (100 - random 51) / 100]
 
 ;; assignment of perceived charging stations in % to each individual
-  ask individual [set pcs (random 100) / 100]
+  ask individual [set pcs (random 101) / 100]
 
 ;; acceptance of electric vehicle - Attitude Toward Using (A)
-  ask individual with [typ = "Comfort-oriented Individualists"]   [set aoev 0.076   set color 15   set individual-thold (100 - random 20) / 100]                    ;; aeov = 3/13*0,3
-  ask individual with [typ = "Cost-oriented Pragmatics"]          [set aoev 0.076   set color 25   set individual-thold (80 - random 20) / 100]                     ;; aeov = 3/13*0,3
-  ask individual with [typ = "Innovation-oriented Progressives"]  [set aoev 0.228   set color 85   set individual-thold (60 - random 20) / 100]                     ;; aeov = 9/13*0,3
-  ask individual with [typ = "Eco-oriented Opinion Leaders"]      [set aoev 0.333   set color 55   set individual-thold (40 - random 20) / 100]                     ;; aeov = 13/13*0,3
+  ask individual with [typ = "Comfort-oriented Individualists"]   [set aoev (3 / 13 * weighting-aoev)   set color 15   set individual-thold (100 - random 21) / 100]
+  ask individual with [typ = "Cost-oriented Pragmatics"]          [set aoev (3 / 13 * weighting-aoev)   set color 25   set individual-thold (80 - random 21) / 100]
+  ask individual with [typ = "Innovation-oriented Progressives"]  [set aoev (9 / 13 * weighting-aoev)   set color 85   set individual-thold (60 - random 21) / 100]
+  ask individual with [typ = "Eco-oriented Opinion Leaders"]      [set aoev (13 / 13 * weighting-aoev)  set color 55   set individual-thold (40 - random 21) / 100]
 
 ;; initial e-car count distributed and weighted by categories (2,6%)
   ask n-of (count individual * initial-e-car-count) individual with [typ = "Innovation-oriented Progressives" or typ =  "Eco-oriented Opinion Leaders"] [adopted]
@@ -150,12 +144,13 @@ end
 
 to setup
   clear-all
+  if (weighting-e + weighting-u + weighting-aoev + weighting-an) != 1 [error "Attention: Weight must be total 1!"]
   set average-node-degree 9
   set tick-count 30
   setup-individuals
   setup-spatially-clustered-network
   ask individual with [adopt? = false] [count_neighbors]
-  ask individual [set belief-e (infrastructure * pcs * 0.25)]
+  ask individual [set belief-e (infrastructure * pcs * weighting-e)]
   reset-ticks
 end
 ;; ============================================================================================================================================================
@@ -170,7 +165,7 @@ to go
   if ticks = tick-count or all? individual [adopt? = true] [stop]
   spread-ev
   ask individual with [adopt? = false] [count_neighbors]
-  ask n-of (2 - random 2) individual with [adopt? = false] [adopted]
+  ask n-of (2 - random 3) individual with [adopt? = false] [adopted]
   tick
 end
 
@@ -183,7 +178,7 @@ end
 ;; ============================================================================================================================================================
 
 to spread-ev
-  ask individual [set utility-u (subsidies * pupo * 0.25)]
+  ask individual [set utility-u (subsidies * pupo * weighting-u)]
   ask individual [calculation]
   ask individual with [adopt? = false]
       [
@@ -201,23 +196,19 @@ to calculation
   ifelse adopted_neighbors = 0
    [set behavior-bi (aoev + utility-u + belief-e)]
    [ifelse adopted_neighbors <= 2
-    [set behavior-bi (aoev + utility-u + belief-e + 0.05)]
+    [set behavior-bi (aoev + utility-u + belief-e + (weighting-an * 0.2))]
     [ifelse adopted_neighbors <= 4
-     [set behavior-bi (aoev + utility-u + belief-e + 0.10)]
+     [set behavior-bi (aoev + utility-u + belief-e + (weighting-an * 0.4))]
      [ifelse adopted_neighbors <= 6
-      [set behavior-bi (aoev + utility-u + belief-e + 0.15)]
+      [set behavior-bi (aoev + utility-u + belief-e + (weighting-an * 0.6))]
       [ifelse adopted_neighbors <= 8
-       [set behavior-bi (aoev + utility-u + belief-e + 0.20)]
-       [set behavior-bi (aoev + utility-u + belief-e + 0.25)]
+       [set behavior-bi (aoev + utility-u + belief-e + (weighting-an * 0.8))]
+       [set behavior-bi (aoev + utility-u + belief-e + (weighting-an))]
       ]
      ]
     ]
    ]
 end
-
-;; ============================================================================================================================================================
-;; end mechanisms
-;; ============================================================================================================================================================
 @#$#@#$#@
 GRAPHICS-WINDOW
 478
@@ -247,9 +238,9 @@ ticks
 30.0
 
 SLIDER
-12
+2
 10
-238
+473
 43
 number-of-nodes
 number-of-nodes
@@ -262,10 +253,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-12
-44
-238
-77
+2
+112
+237
+145
 SETUP
 setup
 NIL
@@ -279,40 +270,40 @@ NIL
 1
 
 SLIDER
-244
+238
 44
-470
+473
 77
 subsidies
 subsidies
 0
 1
-0.7
+0.5
 0.1
 1
 factor
 HORIZONTAL
 
 SLIDER
-244
-10
-470
-43
+2
+44
+237
+77
 infrastructure
 infrastructure
 0
 1
-0.7
+0.5
 0.1
 1
 factor
 HORIZONTAL
 
 BUTTON
-125
-78
-238
-111
+120
+146
+237
+179
 GO
 go
 T
@@ -348,10 +339,10 @@ PENS
 "Opinion Leaders" 1.0 0 -10899396 true "" "plot count turtles with [adopt? = true and typ = \"Eco-oriented Opinion Leaders\"] / count turtles"
 
 BUTTON
-12
-78
-126
-111
+2
+146
+119
+179
 GO ONCE
 go
 NIL
@@ -407,6 +398,66 @@ count turtles with [adopt? = true and typ = \"Eco-oriented Opinion Leaders\"]
 0
 1
 11
+
+SLIDER
+2
+78
+119
+111
+weighting-u
+weighting-u
+0
+1
+0.25
+0.01
+1
+NIL
+HORIZONTAL
+
+SLIDER
+120
+78
+237
+111
+weighting-e
+weighting-e
+0
+1
+0.25
+0.01
+1
+NIL
+HORIZONTAL
+
+SLIDER
+238
+78
+355
+111
+weighting-aoev
+weighting-aoev
+0
+1
+0.25
+0.01
+1
+NIL
+HORIZONTAL
+
+SLIDER
+356
+78
+473
+111
+weighting-an
+weighting-an
+0
+1
+0.25
+0.01
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 # Agentenbasierte Modellierung: Verbreitung einer Innovation in einem Netzwerk mit äußeren Einflüssen unter Nutzung des TAM
@@ -810,12 +861,24 @@ NetLogo 6.2.0
     <metric>count turtles with [adopt? = true and typ = "Cost-oriented Pragmatics"]</metric>
     <metric>count turtles with [adopt? = true and typ = "Innovation-oriented Progressives"]</metric>
     <metric>count turtles with [adopt? = true and typ = "Eco-oriented Opinion Leaders"]</metric>
-    <steppedValueSet variable="random-seed" first="100" step="1" last="200"/>
     <enumeratedValueSet variable="number-of-nodes">
       <value value="1000"/>
     </enumeratedValueSet>
     <steppedValueSet variable="infrastructure" first="0" step="0.1" last="1"/>
     <steppedValueSet variable="subsidies" first="0" step="0.1" last="1"/>
+    <steppedValueSet variable="random-seed" first="100" step="1" last="200"/>
+    <enumeratedValueSet variable="weighting-u">
+      <value value="0.25"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="weighting-aoev">
+      <value value="0.25"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="weighting-e">
+      <value value="0.25"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="weighting-an">
+      <value value="0.25"/>
+    </enumeratedValueSet>
   </experiment>
 </experiments>
 @#$#@#$#@
