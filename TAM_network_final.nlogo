@@ -125,7 +125,7 @@ end
 ;; setup network
 ;; ============================================================================================================================================================
 
-to setup-spatially-clustered-network ;; taken from initial VIRUS-ON-A-NETWORK-MODELL by Stonedahl, F. and Wilensky, U. (2008). NetLogo Virus on a Network model.
+to setup-spatially-clustered-network ;; taken from initial VIRUS-ON-A-NETWORK-MODEL by Stonedahl, F. and Wilensky, U. (2008). NetLogo Virus on a Network model.
   let num-links (average-node-degree * number-of-nodes) / 2
   while [count links < num-links ]
   [
@@ -462,109 +462,143 @@ HORIZONTAL
 @#$#@#$#@
 # Agentenbasierte Modellierung: Verbreitung einer Innovation in einem Netzwerk mit äußeren Einflüssen unter Nutzung des TAM
 
+In diesem Info-Tab lassen sich nähere Erläuterungen und Erklärungen zum vorliegenden Modell und besonders den darin verwendeten Methoden finden.
+
 ## FRAGESTELLUNG
 > **Welchen Einfluss haben verschiedene Policies des Staates auf die Adaptionsentscheidung eines Individuums (Kauf eines E-Autos) in einem sozialen Netzwerk auf Basis des TAM (Technology Acceptance Model)?**
 
-## Anmerkungen / Aktuelles (während Arbeitsprozess aktualisieren)
-**Berechnungen im TAM**
+## ANGLEICHUNG DES TECHNOLOGY ACCEPTANCE MODELS
 
-<img src="TAM_Berechnungen.jpeg" alt="TAM mit unseren Berechnungen" width="1000"/>
+<img src="../TAM_updated.jpeg" alt="TAM nach Davis et al. (1989), eigene Modifiktationen" width="1400"/>
+
+Wie im dem Modell beigefügten ODD bereits erklärt, wurde das ursprüngliche Technology Acceptance Model (Davis et al., 1989) an einigen Stellen modifiziert. Das für die vorliegende Modellierung verwendete Schema ist bei Bedarf dem obigen Bild erneut zu entnehmen.
+
+## ERLÄUTERUNGEN ZU DEN SLIDERN
+
+Zunächst wird auf die einstellbaren Slider im Interface-Tab hingewiesen. Dabei werden diejenigen erklärt, welche nicht eine offensichtliche Einstellung vornehmen. Es wurde sich bewusst während der Erstellung dafür entschieden, eher eine reduzierte Auswahl an Slidern bereitzustellen und einige Anpassungsmöglichkeiten stattdessen fest auf Literaturbasis mit Zahlenwerten zu versehen (z. B. den durchschnittlichen Grad der Vernetzung).
+
+### "infrastructure" und "subsidies"
+Mit diesen Slidern lässt sich die gewünschte Intensität der externen Faktoren im Modell einstellen. Der Wertebereich ist hier erneut auf zwischen 0 und 1 standardisiert festgelegt.
+
+Die Namen der externen Faktoren sind dabei Hinweise, um welche Art des staatlichen Eingriffs es sich handelt bzw. auf welchen Zweig aus dem modifizierten TAM sie einwirken --- jedoch beschränkt sich deren Erklärungskraft nicht nur auf Verbesserung von Infrastruktur oder auf staatliche Subventionen.
+
+Auch andere Unterstützungen bzw. Ausbauintentionen, oder auch staatliche Ge- und Verbote sind denkbar. Beispielsweise könnte auch ein *absehbares Verbot des Verbrennermotors* anstatt "infrastructure" auf die Ease of Use einwirken. Umgekehrt könnte eine *höhere Besteuerung konventioneller Kraftstoffe* anstatt "subsidies" zur Erklärung staatlichen Verhaltens und der Beeinflussung der Usefulness der potentiellen Nutzer herangezogen werden.
+
+Für diesen Punkt ist es also zentral, deutlich zu machen, dass es sich um **beispielhafte Erklärungsmuster** handelt, die **eine Möglichkeit** der Interpretation exemplarisch darstellen, jedoch viele weitere zulassen.
+
+### Gewichtungsfaktoren
+Die Gewichtungsfaktoren dienen dazu, unterschiedliche Äste des TAM auf einfache Art und Weise mit unterschiedlichen Gewichtungen versehen zu können. Im Basis-Ausgangsmodell werden alle Äste gleich mit dem Faktor 0,25 gewichtet.
+
+Jedoch wäre es denkbar, dass der Usefulness aus dem TAM aufgrund der Kosten-Nutzen-Rationalität und des eher finanziell gesteuerten Aspektes größere Bedeutung beigemessen werden soll. Mittels dieser Slider ist das problemlos im Modell möglich, ohne erneut im Code Anpassungen vornehmen zu müssen.
+
+Damit die insgesamte Gewichtung von max. 1,0 nicht überschritten wird, wurde eine Fehlermeldung eingebaut, sobald eine Einstellung der Gewichtung vorgenommen wird, welche 1,0 insgesamt übersteigen würde.
+
+Die Gewichtungen werden auch bei der Auswertung der Daten aus dem Behavior Space in der folgenden Seminararbeit herangezogen werden.
+
+## ERLÄUTERUNGEN ZU DEN METHODEN IM CODE
+
+### Methode: "setup-individuals"
+Diese Methode wurde geschrieben, um die Turtles initial im Modell einzubringen bzw. entstehen zu lassen. Dabei werden zunächst die Form der Turtles und das äußere Erscheinungsbild des Netzwerks festgelegt, anschließend werden dann den so entstehenden Individuen auf Basis der Literatur (Wolf et al., 2015) Charaktereigenschaften zugeteilt. Um diese im Modell genauer auseinanderhalten zu können, werden ihnen auch Farben zugewiesen:
+
+- Eco-oriented Opinion Leaders ---> grün
+- Innovation-oriented Progressives ---> blau
+- Cost-oriented Pragmatics ---> orange
+- Comfort-oriented Individualists ---> rot
+
+Diese Eigenschaften werden wiederum ebenfalls genutzt, um den Individuen weiter einen Hintergrund zu verleihen (z. B. Einordnung in Gehaltsgruppen mittels *salary-group*, Zuordnung von Kaufkraft mittels *pupo* oder Wahrnehmung von Ladesäulen mittels *pcs*). Die genaue Bedeutung der Variablen lässt sich dabei sowohl aus den Kommentaren im Code, als auch erneut aus dem ODD entnehmen. Alle Werte der Variablen wurden dabei, um später eine einheitliche Berechnung zu ermöglichen, auf einen Bereich zwischen 0 und 1 standardisiert festgelegt:
+
+- *pupo* (= Kaufkraft) ergibt sich auf Basis der *salary-group* eines Individuums. Liegt diese über 2.500€/Monat, so liegt die Kaufkraft zwischen zwischen 0 und 1 --- liegt sie unter 2.500€/Monat, so liegt die Kaufkraft lediglich zwischen 0 und 0,5. Die Zuteilung der genauen Zahlenwerte erfolgt zufällig.
+- *pcs* (= Wahrnehmung von Ladesäulen) wird ebenfalls zufällig zugewiesen und befindet sich auch im Wertebereich 0 bis 1.
+- *individual-thold* kennzeichnet den individuell zu erreichenden bzw. zu überschreitenden Schwellenwert, damit ein Individuum sich für die Adaption, d. h. den Kauf eines E-Fahrzeugs, entscheidet. Dieser Wert wird zufällig zugewiesen, jedoch je nach Gruppe unterschiedlich und basierend auf der Literatur (vgl. ebenfalls Wolf et al., 2015): **höhere** Schwellenwerte weisen dabei die Pragmatics und die Individualists auf, da diese Gruppen geringeres Interesse an E-Fahrzeugen haben --- **niedrigere* Schwellenwerte, und damit eine gesteigerte Chance, ein E-Fahrzeug zu erwerben, weisen Opinion Leaders und Progressives auf.
+
+Zum Abschluss der Methode folgt noch eine Zuweisung und Gewichtung des Faktors *aoev* für jedes Individuum, welcher einer der zentralen Berechnungsfaktoren für die Kaufentscheidung eines E-Fahrzeugs mittels des TAM in der vorliegenden Arbeit ist. Ebenfalls werden dann noch die initialen 2,6% an bereits vorhandenen E-Fahrzeugen (lt. ADAC aktueller Stand in Deutschland, siehe ODD) im Modell als Ausgangspunkt eingebracht.
+
+### Methoden: "adopted" und "not-adopted"
+Bei diesen beiden Methoden handelt es sich um Helfermethoden, um den Status der Individuen zu verändern. Sobald ein Individuum adaptiert, wird dessen Status auf *adopted* gesetzt (d. h. *adopt?* wird *true*, das Individuum bekommt die Form eines grünen PKW und wird etwas vergrößert dargestellt).
+
+Alle Individuen, die nicht in den 2,6% der zu Beginn bereits Adaptierenden beinhaltet sind, gelten zunächst als *not-adopted* und werden als Kreise dargestellt.
+
+### Methode: "count_neighbors"
+Diese einfache Methode wurde geschrieben, um Individuen anzuweisen, ihre bereits adaptierten Nachbarn auszuzählen.
+
+### Methoden: "setup-spatially-clustered-network" und "setup"
+Für die "setup-spatially-clustered-network"-Methode wurde sich derer aus dem im Seminar zuvor ausgewählten Basis-Modells "Virus on a Network" (vgl. Stonedahl & Wilensky, 2008) bedient. Zum Einen werden dadurch die Links zwischen den Knoten erzeugt, um ein Netzwerk-Modell zu erstellen, zum Anderen wird das Netzwerk im zweiten Schritt etwas vom Rand wegbewegt, um es visuell ansprechender und übersichtlicher zu machen.
+
+In der "setup"-Methode wird zunächst der oben schon angesprochene Prüfmechanismus für die Gewichtungen gestartet. Sollte diese Prüfung negativ ausfallen (d. h. eine Gewichtung wurde gewählt, welche insgesamt 1,0 übersteigt), wird eine Fehlermeldung ausgeworfen und das Modell kann nicht konstruiert bzw. durchgeführt werden. Diese Methode liegt dem Button **"SETUP"** zugrunde.
+
+In "setup" werden folgende Punkte festgelegt:
+
+- *average-node-degree* von 9, welcher die Verwandtschafts- und engeren Freundschaftsbeziehungen der Individuen abbildet (vgl. Gillespie et al., 2015)
+- *tick-count* von 30 --- dieser Wert wurde empirisch von den Gruppenmitgliedern bestimmt, da in keinem der Testläufe nach 30 Ticks noch nennenswerte Veränderungen passierten. Dies ist v. a. auch der Tatsache geschuldet, dass es sich um ein SI-Modell handelt, in dem die Individuen nicht wieder "susceptible" werden können.
+- es werden folglich die beiden anderen Methoden "setup-individuals" und "setup-spatially-clustered-network" abgerufen, um das Netzwerk zu erzeugen.
+- Individuen, die noch nicht von Anfang an adaptiert haben, werden angewiesen ihre Nachbarn zu zählen, welche dies bereits getan haben. Dies ist der initiale Schritt für den TAM-Faktor "adopted-neighbors".
+- Ferner wird bereits hier *belief-e*, also die Perceived Ease of Use, der Indiviuen berechnet: es werden der *externe Faktor "infrastructure"* mit der Wahrnehmung von Ladesäulen *pcs* und dem zugehörigen Gewichtungsfaktor multipliziert.
+
+### Methode: "calculation"
+Diese Methodik ist das Kernstück der Simulation, da hier die relevanten Berechnungen durchgeführt werden. Hier werden die Einzelteile des modifizierten TAM aus dem obigen Teil des Info-Tabs miteinander in Beziehung gesetzt und verrechnet. Die Basis-Berechnung des Modells gestaltet sich folgendermaßen:
+
+> *behavior-bi* = *aoev* + *utility-u* + *belief-e* + *adopted-neighbors*
+
+Sowohl *utility-u*, als auch *belief-e* (Ease of Use) werden durch die externen Faktoren mit bestimmt, sowie durch die Charakteristika der Individuen. Die Berechnungen wurden an den relevanten Stellen bereits erläutert (*utility-u* bei der Methode "spread-ev", *belief-e* unter der Methode "setup"). Ebenso steht bereits *aoev* (Attitude Toward Using) fest: diese wurde in der Methode "setup-individuals" bereits über die Charakteristika der Individuen zugewiesen. Diese wurden alle ebenfalls schon gewichtet.
+
+Die Methode "calculation" verbindet diese Elemente nun und weist auch den Nachbarschaftsfaktor "adopted-neighbors" mit Gewichtung zu. So wurde für diesen eine ordinale Abstufung eingearbeitet:
+
+- Hat ein Individuum **keine** adaptierten Nachbarn, so wird für dieses in der Berechnung der Nachbarschaftsfaktor logischerweise **nicht berücksichtigt**.
+- Hat ein Individuum **einen oder zwei** adaptierte Nachbarn, so wird der Gewichtungsfaktor mit **0,2** multipliziert und dann in der Gleichung berücksichtigt.
+- Hat ein Individuum **drei oder vier** adaptierte Nachbarn, so wird der Gewichtungsfaktor mit **0,4** multipliziert und dann in der Gleichung berücksichtigt.
+- Hat ein Individuum **fünf oder sechs** adaptierte Nachbarn, so wird der Gewichtungsfaktor mit **0,6** multipliziert und dann in der Gleichung berücksichtigt.
+- Hat ein Individuum **sieben oder acht** adaptierte Nachbarn, so wird der Gewichtungsfaktor mit **0,8** multipliziert und dann in der Gleichung berücksichtigt.
+- Hat ein Individuum **mehr als acht** adaptierte Nachbarn, so wird der **Gewichtungsfaktor komplett** in der Gleichung verrechnet.
+
+Dies wurde mittels einfacher IF-Bedingungen im Code bewerkstelligt. Diese zentrale Methode wird dann in der Methode "spread-ev" abgerufen und durchgeführt, um zu bestimmen, welche Individuen adaptieren oder nicht.
+
+### Methode: "spread-ev"
+Diese Methode beschreibt die Verbreitung der Innovation innerhalb der Gesellschaft in vorliegendem Modell. Sie beinhaltet:
+
+- Im ersten Schritt wird für alle Individuen die *utility-u*, also die Perceived Usefulness aus dem modifizierten TAM, berechnet. Dies geschieht durch die Multiplikation des *externen Faktors "subsidies"* mit der Kaufkraft *pupo* der Individuen und dem zugehörigen Gewichtungsfaktor.
+- Dann wird im zweiten Schritt die Methode "calculation" abgerufen, welche bereits oben erklärt wurde.
+- Zuletzt wird festgelegt, dass ein Individuum auch visuell ein Feedback gibt, wenn es adaptiert hat. Dies geschieht über die Methoden "adopted" oder "not-adopted". Ein Individuum erhält "adopted", wenn seine Behavioral Intention to Use *behavior-bi* höher ist, als sein individueller Schwellenwert *individual-thold*.
+
+### Methode: "go"
+Diese Methodik liegt dem Button **"GO"** zugrunde und ist der Start der Berechnungen bzw. der Simulation im Modell.
+
+Zunächst wird eine Stop-Bedingung festgelegt: die Simulation soll stoppen, sobald *tick-count* erreicht oder alle Individuen im Modell adaptiert sind. Daraufhin wird die bereits zuvor beschriebene Methode "spread-ev" abgerufen, um die Berechnungen zu starten. Ebenfalls wird pro Tick erneut von jedem Individuum, welches noch nicht adaptiert hat, ausgezählt, wie viele bereits adaptierte Nachbarn es hat, was sich auf den Nachbarschaftsfaktor *adopted-neighbors* auswirkt.
+
+Zusätzlich wurde, um einen gewissen Realismus mit einzubeziehen, eine randomisierte Adaption von E-Fahrzeugen mit einbezogen. Nicht für alle Individuen in einer Gesellschaft kann angenommen werden, dass immer ein Kosten-Nutzen-Rationalismus bzw. die strenge Befolgung des TAM bei Kauf-/Adaptionsentscheidungen vorliegt. Deshalb wurde sich dafür entschieden, in der "spread-ev"-Methode pro Tick auch immer bis zu zwei zufällig ausgewählte, noch nicht adaptierte Individuen ein E-Fahrzeug kaufen zu lassen.
+
+Diese Vorgänge werden pro Tick durchgeführt bzw. evaluiert und bringen die Simulation in Gang. Um genauer die Aktionen pro Tick verfolgen zu können wurde diese Methodik auch im Button **"GO ONCE"** verwendet, jedoch ohne die Checkbox "Forever", um den Loop zu deaktivieren.
 
 
-+ Innovation = E-Fahrzeuge
-	+ Festlegung d. Schwellenwertes: wie hoch? Auf Grundlage von Forschung bestimmbar?
-	+ Zusammenstellung d. Formel für die Errechnung, welchen Wert ein Turtle erreicht
-	+ Variationsparameter für die externen Variablen über Zeit?
-	+ Größe des Netzwerkeffektes: wie bestimmbar?
-+ Grundwert für Attitude Toward Using: von uns festgelegt auf Wolf et al. (2015) und deren 
-+ Usefulness (U) und Ease of Use (E) müssen von den Individuen eingeschätzt werden können
-	+ Hier evtl. Summen-Aggregation besser, z. B.: Grundwert Usefulness E-Auto auf 1 setzen, dann +5 für hohe Subventionen, +2 für etwas Subvention, +0 für keine Subvention (stark vereinfacht)
 
-**Gewichtung von gleichem Typ bei Nachbarschafts-Faktor**
 
-+ Auszählung der Nachbarn: wie viele haben schon adopted?
-	+ möglich nach: Farbe, Shape, Status von "adopt?"-Variable
-	+ Aktuell: Schwierigkeiten mit *link-neighbors*-Funktion und *count*
 
-## Ideen (während Arbeitsprozess aktualisieren)
-### Freundschafts- und Familienbeziehungen als Grundlage für das Netzwerk
 
-**Familie:**
 
-+ wir haben Infos aus dem ESS, dass der Average hier bei 2,6 liegt, also können wir von aufgerundet 3 ausgehen (einziges Problem: Average verzerrt evtl. weil wir viele Singles mit einzelnen Haushalten in D. haben --- das nur, dass wir es wissen)
 
-**Freundeskreis:**
 
-+ Ich habe [das hier](https://www.spektrum.de/frage/wie-viele-freunde-kann-ein-mensch-haben/1883803) und [das hier](https://www.quarks.de/gesellschaft/darum-haben-nicht-alle-menschen-in-deinem-leben-platz/) gefunden. Hier steht etwas von eine Bekannten-Netzwerk von ca. 150 pro Person, aber Freunde sind pro Person bei ca. 10-15 --- zu **engen Vertrauten** (die für uns eigentlich relevanter wären) zählen die meisten Menschen 3-5 bzw. lt. Gillespie 4-6.
-+ Die Zahlen werden [bei Gillespie et al. (2015)](https://journals.sagepub.com/doi/full/10.1177/0265407514546977) z. B. wissenschaftlich nochmal bestätigt
-+ Dabei gehen eigentlich alle diese Netzwerk-Größen-Überlegungen auf die [Dunbar-Zahl von 150](https://de.wikipedia.org/wiki/Dunbar-Zahl) zurück. Diese kommt aus der Anthropologie/Evolutionsforschung und behandelt die Netzwerkgröße von Primaten, siehe [hier](https://www.sciencedirect.com/science/article/pii/004724849290081J)
 
-### Nutzung der "Acceptance of Electric Vehicles" aus Wolf et al. (2015) als Ausgangswert (also Attitude Toward Usings) für die Kalkulation, ob ein Turtle adaptiert oder nicht
 
-+ Beeinflussung daher möglich über Slider der externen Einflüsse, welche *Usefulness* und *Ease of Use* erhöhen/vermindern
-+ Beeinflussung ebenfalls über Knoten im jeweiligen Netzwerk als Netzwerkeffekt --- Knoten mit E-Auto beeinflussen andere (evtl. mit Gewichtung: Opinion-Leaders könnten andere eher beeinflussen (als Opinion-Leader = deren Ziel), als Individualisten (kein Interesse daran, was andere für ein Auto fahren sollten)
 
-## Das TAM nach Davis et al. (1989)
-Das TAM stellt einen Ansatz für das Nutzungsverhalten eines Individuums gegenüber einer Innovation dar. Dabei werden die jeweiligen Einflüsse des wahrgenommenen Nutzens (Utility) und des tatsächlichen Nutzens (Belief, Desire) auf die damit verbunden Absicht der Nutzung betrachtet. Eine gesteigerte Absicht der Nutzung resultiert schlussendlich zu einer Nutzung jener Technologie (E-Auto). 
 
-Die komplexeren Modelle (TAM2, UTAUT) sind weniger praxiserprobt und komplexer, weshalb sie nicht bzw. nur in Teilen für vorliegende geplante Simulation genutzt werden können und sollen.
 
-### Bestandteile des TAM
-**External Variables**: wirken auf U und E ein
 
-+ Beeinflussen, ob diese steigen oder sinken und damit auch, ob eine Innovation adaptiert wird
 
-**Perceived Usefulness (U)**: „wahrgenommene Nützlichkeit“; nach außen, Utility
 
-+ Wahrnehmung eines Individuums: durch die Innovation wird Leben bereichert/verbessert/vereinfacht
-+ Je größer der individuelle Nutzen eingeschätzt wird, desto höher U – je größer U, desto größer die Wahrscheinlichkeit der Adaption
-+ „Was habe ich davon, wenn ich die Innovation adaptiere?“; Kosten-Nutzen-Abwägung; Aspekte von Rational Choice-Theorie (zielt also eher auf z. B. Subventionen ab)
 
-**Perceived Ease of Use (E)**: „wahrgenommene Benutzerfreundlichkeit“; nach innen, Belief/Desire
 
-+ Abwägung des Individuums: Größe des Aufwandes, den eine Technologieadaption mit sich bringen würde
-+ Je geringer dieser Aufwand, desto höher E – je höher E, desto höher die Wahrscheinlichkeit der Adaption der Technologie
-+ „Wie einfach wäre es für mich, wenn ich die Technologie adaptiere, auch mit ihr umzugehen?“; Marktsondierung (zielt eher auf z. B. Infrastruktur oder auf die internen Motivationen/Charakteristika ab)
 
-**Attitude toward Using (A)**: Voraussetzungen/Prädispositionen von Individuen (übersetzbar in Zahlenwert)
 
-**Behavioral Intention to Use (BI)** à Individuen denken genauer über die Durchführung Adaption nach
 
-+ Info: TAM geht davon aus (genau wie TRA), dass wenn ein BI geformt wurde, Individuen auch zwangsläufig danach handeln (d. h. aus positivem BI ergibt sich zwingend auch actual system use)
 
-**Actual System Use**: eine Innovation wird vom Individuum adaptiert
 
-## Basic principles
-### Fragen an das Modell
 
-> Ist eine stark ausgeprägte Adaption von E-Fahrzeugen Ausdruck von hohen individuellen Charakteristika der Akteure oder wird sie stärker bedingt durch externe Faktoren (staatlicher Eingriff)?
 
-> Welche externen Faktoren (d. h. welche Szenarien) können die Verbreitung der Innovation (aus Sicht staatlichen Eingriffs) verbessern bzw. optimieren? (Das ist lt. Davis et al. (1989) ein Ziel des TAM, das zu ermöglichen)
 
-### Dazugehörige Überlegungen und Zusammenhänge
-**Komplexes System / externe Faktoren** 
 
-+ Erstellen der Umwelt mit individuellen Charakteristika für die Akteure in Anlehnung an einen repräsentativen Datensatz der deutschen Gesellschaft
-+ Externe Faktoren (denkbar und erweiterbar): Subventionen des Staats für E-Fahrzeuge, Vorhandensein von nötiger Infrastruktur, Treibstoff-Besteuerung, Preis für konventionelle Fahrzeuge
-+ Wahrgenommener Nutzen des E-Fahrzeugs im eigenen Netzwerk (z. B. Freundes-/Familienkreis)
 
-**Charakteristika der Akteure**
 
-+ Finanzieller Hintergrund (potenzieller Nutzer muss Geld zum Kauf haben)
-+ Alter
-+ Wolf (2015): Charakterisierung von E-Mobility-Nutzern (über Zuweisung auf Basis der Informationen aus Wolfs Aufsatz bzw. eventuell Gruppierung/Indexbildung mit Hilfe der Variable zur Umweltfreundlichkeit aus ESS 2018)
-- ... (work in progress)
 
-### Faktoren für Dynamik im Modell
-1. Unterschiedlich hohe Prädispositionen von Individuen in der Initialisierungsphase des Netzwerks
-2. Externe Variablen und deren Wirkkombination bzw. deren „Wichtigkeit“ (über die Faktoren gesteuert) --- getestet durch unterschiedliche Szenarien
-3. Externe Variablen variieren mit verstreichender Zeit (Förderungen werden stärker / schwächer oder laufen aus, etc., …)
-4. Auswirkungen der Netzwerkstruktur: wenn bereits viele E-Fahrzeug-Nutzer erzeugt wurden, stellt auch das einen Faktor dar, der den Schwellenwert treiben kann (der natürlich nicht allzu hoch sein darf, weil wir sonst den sozialen Druck z. B. mehr für Umwelt zu tun massiv überschätzen würden)
 
-## Wolf, I., Schröder, T., Neumann, J., de Haan, G. (2015). Changing minds about electric cars: An empirically grounded agent-based modeling approach
-+ Aufsatz [unter diesem Link](https://www.sciencedirect.com/science/article/abs/pii/S0040162514002960) verfügbar
-+ Klassifizierung von Individuen und Zusammenhang mit Präferenz für ein E-Fahrzeug
-+ Frage danach, was die einzelnen Gruppen von Individuen bedeuten: sollte hier gelistet werden!
 @#$#@#$#@
 default
 true
@@ -848,7 +882,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.2.0
+NetLogo 6.2.2
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
