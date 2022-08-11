@@ -537,7 +537,7 @@ In "setup" werden folgende Punkte festgelegt:
 ### Methode: "calculation"
 Diese Methodik ist das Kernstück der Simulation, da hier die relevanten Berechnungen durchgeführt werden. Hier werden die Einzelteile des modifizierten TAM aus dem obigen Teil des Info-Tabs miteinander in Beziehung gesetzt und verrechnet. Die Basis-Berechnung des Modells gestaltet sich folgendermaßen:
 
-> *behavior-bi* = *aoev* + *utility-u* + *belief-e* + *adopted-neighbors*
+> **behavior-bi = aoev + utility-u + belief-e + adopted-neighbors**
 
 Sowohl *utility-u*, als auch *belief-e* (Ease of Use) werden durch die externen Faktoren mit bestimmt, sowie durch die Charakteristika der Individuen. Die Berechnungen wurden an den relevanten Stellen bereits erläutert (*utility-u* bei der Methode "spread-ev", *belief-e* unter der Methode "setup"). Ebenso steht bereits *aoev* (Attitude Toward Using) fest: diese wurde in der Methode "setup-individuals" bereits über die Charakteristika der Individuen zugewiesen. Diese wurden alle ebenfalls schon gewichtet.
 
