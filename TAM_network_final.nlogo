@@ -460,7 +460,7 @@ NIL
 HORIZONTAL
 
 @#$#@#$#@
-# Agentenbasierte Modellierung: Verbreitung einer Innovation in einem Netzwerk mit äußeren Einflüssen unter Nutzung des TAM
+# Verbreitung einer Innovation (E-Mobility) in einem Netzwerk mit äußeren Einflüssen unter Nutzung eines modifizierten TAM
 
 In diesem Info-Tab lassen sich nähere Erläuterungen und Erklärungen zum vorliegenden Modell und besonders den darin verwendeten Methoden finden.
 
@@ -567,7 +567,6 @@ Zunächst wird eine Stop-Bedingung festgelegt: die Simulation soll stoppen, soba
 Zusätzlich wurde, um einen gewissen Realismus mit einzubeziehen, eine randomisierte Adaption von E-Fahrzeugen mit einbezogen. Nicht für alle Individuen in einer Gesellschaft kann angenommen werden, dass immer ein Kosten-Nutzen-Rationalismus bzw. die strenge Befolgung des TAM bei Kauf-/Adaptionsentscheidungen vorliegt. Deshalb wurde sich dafür entschieden, in der "spread-ev"-Methode pro Tick auch immer bis zu zwei zufällig ausgewählte, noch nicht adaptierte Individuen ein E-Fahrzeug kaufen zu lassen.
 
 Diese Vorgänge werden pro Tick durchgeführt bzw. evaluiert und bringen die Simulation in Gang. Um genauer die Aktionen pro Tick verfolgen zu können wurde diese Methodik auch im Button **"GO ONCE"** verwendet, jedoch ohne die Checkbox "Forever", um den Loop zu deaktivieren.
-
 
 
 
